@@ -1,0 +1,7 @@
+# Versi perlu diuji ulang sebelum sesi. Pin versi yang sudah dicoba trainer.
+azure-ai-projects
+azure-identity
+openai
+azure-cognitiveservices-speech
+requests
+python-dotenv
