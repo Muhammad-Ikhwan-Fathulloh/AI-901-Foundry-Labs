@@ -6,3 +6,7 @@ azure-cognitiveservices-speech>=1.35.0
 requests>=2.31.0
 python-dotenv>=1.0.0
 pillow>=10.0.0
+pypdf>=4.0.0
+
+# Dependensi Tambahan untuk Uji Coba Model Alternatif (Non-Azure / Gratis)
+edge-tts>=7.0.0

@@ -64,9 +64,11 @@ flowchart TD
     C6 --> ACU
 
     C1 -.-> AltLayer
+    C2 -.-> AltLayer
     C3 -.-> AltLayer
     C4 -.-> FreeSpeech
     C5 -.-> AltLayer
+    C6 -.-> AltLayer
 ```
 
 ---
@@ -86,16 +88,19 @@ kode_praktik_AI901/
 ├── .env.example                # Template konfigurasi environment Azure
 ├── data/
 │   ├── ulasan.txt              # Dataset teks ulasan untuk analisis
-│   └── rak.jpg                 # Contoh foto rak untuk pengujian multimodal
+│   ├── rak.jpg                 # Contoh foto rak untuk pengujian multimodal
+│   └── invoice.pdf             # Contoh dokumen invoice PDF untuk ekstraksi
 ├── output/                     # Direktori hasil eksekusi (JSON, WAV, PNG)
 └── alternatif/                 # Implementasi model alternatif (Non-Azure)
     ├── README.md               # Panduan khusus modul alternatif
     ├── config_alt.py           # Multi-provider client (Ollama/OpenAI/Gemini)
     ├── .env.alt.example        # Template konfigurasi model alternatif
     ├── 01_chat_alt.py          # Chat interaktif dengan Ollama / Gemini / OpenAI
+    ├── 02_agent_alt.py          # Autonomous AI Agent dengan Tool Calling
     ├── 03_text_analysis_alt.py # Analisis sentimen JSON dengan model alternatif
     ├── 04_speech_free_alt.py   # Layanan suara gratis (Edge-TTS & Whisper)
-    └── 05_vision_alt.py        # Analisis gambar dengan model multimodal alternatif
+    ├── 05_vision_alt.py        # Analisis gambar dengan model multimodal alternatif
+    └── 06_documents_alt.py     # Ekstraksi invoice PDF dengan model alternatif
 ```
 
 ---
@@ -262,19 +267,22 @@ CU_KEY=<api-key-content-understanding>
 
 Klien SDK modern mengadopsi standar antarmuka OpenAI yang universal. Kami telah menyediakan direktori `alternatif/` yang mengimplementasikan skrip-skrip di atas menggunakan penyedia AI lainnya:
 
-```
-alternatif/
-├── 01_chat_alt.py          # Chat interaktif
-├── 03_text_analysis_alt.py # Analisis ulasan (JSON mode)
-├── 04_speech_free_alt.py   # Suara 100% gratis (Edge-TTS & Whisper)
-└── 05_vision_alt.py        # Analisis gambar multimodal
-```
+### 📊 Matriks Keselarasan Modul (Azure vs Alternatif)
+
+| Modul Ujian / Topik | Target Azure | Alternatif Free Cloud (Gemini) | Alternatif Offline (Ollama/Lokal) | Skrip Alternatif |
+|---|---|---|---|---|
+| **01. Chat LLM** | Azure OpenAI (GPT-4o) | `gemini-1.5-flash` | `llama3.2` | [`01_chat_alt.py`](alternatif/01_chat_alt.py) |
+| **02. AI Agents** | Azure AI Agent Service | Gemini Function Calling | Ollama Tool Calling | [`02_agent_alt.py`](alternatif/02_agent_alt.py) |
+| **03. Text Analysis** | Azure Language / JSON Mode | Gemini JSON Mode | Llama 3.2 JSON Mode | [`03_text_analysis_alt.py`](alternatif/03_text_analysis_alt.py) |
+| **04. Speech AI** | Azure Speech Service | Edge-TTS (TTS) + Whisper (STT) | Edge-TTS (TTS) + Whisper (STT) | [`04_speech_free_alt.py`](alternatif/04_speech_free_alt.py) |
+| **05. Vision** | Azure OpenAI Vision | Gemini 1.5 Flash Multimodal | LLaVA / Llama 3.2 Vision | [`05_vision_alt.py`](alternatif/05_vision_alt.py) |
+| **06. Documents** | Content Understanding | Gemini Document Analysis | pypdf + Llama 3.2 Extractor | [`06_documents_alt.py`](alternatif/06_documents_alt.py) |
 
 ### Opsi Model yang Didukung:
 
 1. **Ollama (100% Lokal, Gratis, & Offline):**
    - Mendukung model open-source seperti `llama3.2`, `mistral`, `deepseek-r1`, dan `llava` (multimodal).
-   - Tanpa biaya token, tanpa kartu kredit, dan privasi penuh.
+   - Mendukung Function / Tool Calling lokal secara mandiri.
 2. **Google Gemini (Google AI Studio):**
    - Mendukung `gemini-1.5-flash` dan `gemini-2.0-flash` dengan kuota gratis melimpah via endpoint OpenAI-compatible.
 3. **OpenAI Direct:**

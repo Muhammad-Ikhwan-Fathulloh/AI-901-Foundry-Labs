@@ -1,36 +1,51 @@
 # Panduan Praktik AI Model Alternatif (Non-Azure)
 
-Modul alternatif ini dirancang agar siapa saja dapat mempelajari dan mempraktikkan konsep AI tingkat lanjut (Chat, Structured Output/JSON, Speech AI, Vision Multimodal) **tanpa ketergantungan pada langganan atau kuota Azure**.
+Modul alternatif ini dirancang agar siapa saja dapat mempelajari dan mempraktikkan seluruh konsep silabus **AI-901 (Chat, Agents, Text Analysis, Speech, Vision, & Document Understanding)** **tanpa ketergantungan pada langganan atau kuota Azure**.
 
 ---
 
-## ❓ Apakah Bisa Menggunakan Model AI Lainnya?
+## 📊 Matriks Keselarasan Modul (Azure vs Alternatif)
 
-**Bisa, 100%!**
+Berikut adalah pemetaan lengkap antara modul Azure resmi dan implementasi alternatif gratis/lokal yang tersedia di repositori ini:
 
-Hampir seluruh ekosistem AI modern telah mengadopsi standar **OpenAI Chat Completion API Specification**. Standar ini mencakup format pengiriman prompt (`messages=[{"role": ..., "content": ...}]`), streaming, tool/function calling, format keluaran JSON (`json_object`), hingga input multimodal (URL/Base64 image).
-
-Oleh karena itu, modul ini menyediakan adapter fleksibel (`config_alt.py`) yang memungkinkan Anda beralih antar penyedia AI hanya dengan mengubah konfigurasi file `.env`.
-
----
-
-## 🚀 Pilihan Penyedia Model Alternatif
-
-| Penyedia (Provider) | Jenis Model | Kelebihan | Biaya |
-|---|---|---|---|
-| **Ollama** | Llama 3.2, Mistral, DeepSeek-R1, LLaVA | Berjalan 100% lokal, offline, data privat | **Gratis (0 IDR)** |
-| **OpenAI Direct** | GPT-4o, GPT-4o-mini, DALL-E 3 | Akurasi sangat tinggi, model standar industri | Berbayar per token (ada tier murah) |
-| **Google Gemini** | Gemini 1.5 Flash, Gemini 2.0 Flash | Kecepatan tinggi, context window panjang (1M) | **Gratis** (tersedia kuota free di Google AI Studio) |
-| **Edge-TTS & Whisper** | Microsoft Neural Voice & Whisper | Sintesis suara alami berbahasa Indonesia & STT | **Gratis (0 IDR)** tanpa API Key |
+| Modul Ujian / Topik | Target Azure | Alternatif Free Cloud (Gemini) | Alternatif Offline (Ollama/Lokal) | Skrip Alternatif |
+|---|---|---|---|---|
+| **01. Chat LLM** | Azure OpenAI (GPT-4o) | `gemini-1.5-flash` | `llama3.2` | [`01_chat_alt.py`](01_chat_alt.py) |
+| **02. AI Agents** | Azure AI Agent Service | Gemini Function Calling | Ollama Tool Calling | [`02_agent_alt.py`](02_agent_alt.py) |
+| **03. Text Analysis** | Azure Language / JSON Mode | Gemini JSON Mode | Llama 3.2 JSON Mode | [`03_text_analysis_alt.py`](03_text_analysis_alt.py) |
+| **04. Speech AI** | Azure Speech Service | Edge-TTS (TTS) + Whisper (STT) | Edge-TTS (TTS) + Whisper (STT) | [`04_speech_free_alt.py`](04_speech_free_alt.py) |
+| **05. Vision** | Azure OpenAI Vision | Gemini 1.5 Flash Multimodal | LLaVA / Llama 3.2 Vision | [`05_vision_alt.py`](05_vision_alt.py) |
+| **06. Documents** | Content Understanding | Gemini Document Analysis | pypdf + Llama 3.2 Extractor | [`06_documents_alt.py`](06_documents_alt.py) |
 
 ---
 
-## 🛠️ Cara Penggunaan & Setup
+## ❓ Mengapa Bisa Menggunakan Model Lain?
 
-### Opsi A: Menggunakan Ollama (100% Gratis & Lokal)
+Hampir seluruh ekosistem AI modern telah mengadopsi standar antarmuka **OpenAI Specification**:
+1. Format pesan standar: `messages=[{"role": ..., "content": ...}]`
+2. **Tool/Function Calling:** format skema JSON untuk memanggil fungsi lokal secara otonom.
+3. **Structured Outputs (JSON Mode):** `response_format={"type": "json_object"}` untuk menjamin keluaran JSON valid.
+4. **Multimodal Input:** format pengiriman gambar URL/Base64 langsung ke model LLM.
 
-1. Unduh dan pasang Ollama dari [https://ollama.com](https://ollama.com).
-2. Buka terminal lalu unduh model yang dibutuhkan:
+Melalui adapter [`config_alt.py`](config_alt.py), Anda dapat beralih penyedia model secara instan hanya dengan mengubah variabel `AI_PROVIDER` di file `.env`.
+
+---
+
+## 🛠️ Pilihan Setup & Konfigurasi
+
+### Opsi A: Menggunakan Google Gemini (Free Cloud - Rekomendasi)
+1. Dapatkan API Key gratis di [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Atur di file `.env`:
+   ```env
+   AI_PROVIDER=gemini
+   GEMINI_API_KEY=AIzaSy...IsiKunciAnda...
+   GEMINI_CHAT_MODEL=gemini-1.5-flash
+   GEMINI_VISION_MODEL=gemini-1.5-flash
+   ```
+
+### Opsi B: Menggunakan Ollama (100% Offline & Lokal)
+1. Pasang Ollama dari [https://ollama.com](https://ollama.com).
+2. Unduh model di terminal:
    ```bash
    ollama pull llama3.2
    ollama pull llava
@@ -43,20 +58,8 @@ Oleh karena itu, modul ini menyediakan adapter fleksibel (`config_alt.py`) yang 
    OLLAMA_VISION_MODEL=llava
    ```
 
-### Opsi B: Menggunakan Google Gemini
-
-1. Dapatkan API Key gratis di [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. Atur di file `.env`:
-   ```env
-   AI_PROVIDER=gemini
-   GEMINI_API_KEY=AIzaSy...
-   GEMINI_CHAT_MODEL=gemini-1.5-flash
-   GEMINI_VISION_MODEL=gemini-1.5-flash
-   ```
-
 ### Opsi C: Menggunakan OpenAI Langsung
-
-1. Dapatkan API Key dari [OpenAI Platform](https://platform.openai.com/api-keys).
+1. Dapatkan API Key di [OpenAI Platform](https://platform.openai.com/api-keys).
 2. Atur di file `.env`:
    ```env
    AI_PROVIDER=openai
@@ -67,18 +70,24 @@ Oleh karena itu, modul ini menyediakan adapter fleksibel (`config_alt.py`) yang 
 
 ---
 
-## 🏃 Menjalankan Skrip Alternatif
+## 🏃 Cara Menjalankan Seluruh Modul Alternatif
 
 ```bash
-# 1. Chat Client interaktif
+# 01. Chat Client Interaktif multi-turn
 python alternatif/01_chat_alt.py
 
-# 2. Analisis Sentimen & Entitas (JSON Mode)
+# 02. Autonomous AI Agent dengan Tool Calling (cek ongkir & resi)
+python alternatif/02_agent_alt.py
+
+# 03. Analisis Teks Berstruktur (Sentimen, Entitas NER, Ringkasan)
 python alternatif/03_text_analysis_alt.py
 
-# 3. Layanan Suara Gratis (Edge-TTS & Whisper)
+# 04. Layanan Suara 100% Gratis (TTS Suara Natural & STT Whisper)
 python alternatif/04_speech_free_alt.py
 
-# 4. Multimodal Vision (Analisis Gambar rak.jpg)
+# 05. Multimodal Vision (Analisis Foto Rak Toko)
 python alternatif/05_vision_alt.py
+
+# 06. Document Understanding (Ekstraksi Invoice PDF ke JSON)
+python alternatif/06_documents_alt.py
 ```
