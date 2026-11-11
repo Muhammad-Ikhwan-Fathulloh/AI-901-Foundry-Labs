@@ -1,11 +1,13 @@
 """
-P-L2.7: Speech synthesis (teks ke suara) dan speech recognition (suara ke teks)
-memakai Azure Speech di Foundry Tools.
+Modul 04: Layanan Suara (Speech-to-Text & Text-to-Speech) dengan Azure AI Speech.
 
-Alur:
-1. Ubah teks pengumuman menjadi file WAV (synthesis).
-2. Baca kembali file WAV tersebut menjadi teks (recognition).
-3. Bandingkan hasilnya dengan teks asli.
+Deskripsi:
+1. Speech Synthesis (Text-to-Speech / TTS): Mengonversi teks berbahasa Indonesia ke file suara WAV.
+2. Speech Recognition (Speech-to-Text / STT): Mengenali dan mentranskripsi file WAV kembali menjadi teks.
+3. Evaluasi: Memvalidasi teks asli dengan hasil transkripsi model speech.
+
+Cara Menjalankan:
+    python 04_speech.py
 """
 import os
 import azure.cognitiveservices.speech as speechsdk
@@ -17,7 +19,9 @@ OUT_WAV = os.path.join("output", "pengumuman.wav")
 
 
 def make_config():
-    cfg = speechsdk.SpeechConfig(subscription=env("AZURE_SPEECH_KEY"), region=env("AZURE_SPEECH_REGION"))
+    key = env("AZURE_SPEECH_KEY")
+    region = env("AZURE_SPEECH_REGION")
+    cfg = speechsdk.SpeechConfig(subscription=key, region=region)
     cfg.speech_recognition_language = "id-ID"
     return cfg
 
@@ -27,28 +31,48 @@ def synthesize(cfg):
     cfg.speech_synthesis_voice_name = VOICE
     audio_out = speechsdk.audio.AudioOutputConfig(filename=OUT_WAV)
     synthesizer = speechsdk.SpeechSynthesizer(speech_config=cfg, audio_config=audio_out)
+
+    print("1. Mengonversi teks ke audio WAV (Speech Synthesis)...")
     result = synthesizer.speak_text_async(TEXT).get()
+
     if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-        print(f"Audio dibuat: {OUT_WAV}")
+        print(f"   [OK] Audio berhasil dibuat: {OUT_WAV}")
+    elif result.reason == speechsdk.ResultReason.Canceled:
+        cancellation = result.cancellation_details
+        raise SystemExit(f"   [ERROR] Synthesis dibatalkan: {cancellation.reason}. Detail: {cancellation.error_details}")
     else:
-        raise SystemExit(f"Synthesis gagal: {result.reason}")
+        raise SystemExit(f"   [ERROR] Synthesis gagal: {result.reason}")
 
 
-def recognize(cfg):
+def recognize(cfg) -> str:
+    print("2. Membaca kembali file WAV menjadi teks (Speech Recognition)...")
     audio_in = speechsdk.audio.AudioConfig(filename=OUT_WAV)
     recognizer = speechsdk.SpeechRecognizer(speech_config=cfg, audio_config=audio_in)
     result = recognizer.recognize_once_async().get()
+
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
         return result.text
-    raise SystemExit(f"Recognition gagal: {result.reason}")
+    elif result.reason == speechsdk.ResultReason.NoMatch:
+        raise SystemExit("   [WARNING] Suara tidak terdeteksi atau tidak cocok dengan bahasa id-ID.")
+    elif result.reason == speechsdk.ResultReason.Canceled:
+        cancellation = result.cancellation_details
+        raise SystemExit(f"   [ERROR] Recognition dibatalkan: {cancellation.reason}. Detail: {cancellation.error_details}")
+    raise SystemExit(f"   [ERROR] Recognition gagal: {result.reason}")
 
 
 def main():
+    print("=" * 60)
+    print("Modul 04: Azure AI Speech Service (AI-901)")
+    print("=" * 60)
+
     cfg = make_config()
     synthesize(cfg)
     transcript = recognize(cfg)
-    print("Teks asli   :", TEXT)
-    print("Hasil dengar:", transcript)
+
+    print("\n--- Evaluasi Akurasi Transkripsi ---")
+    print(f"Teks Asli        : {TEXT}")
+    print(f"Hasil Transkripsi: {transcript}")
+    print("Status           : Berhasil.")
 
 
 if __name__ == "__main__":
