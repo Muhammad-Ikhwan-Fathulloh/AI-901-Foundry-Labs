@@ -8,8 +8,9 @@ Modul alternatif ini dirancang agar siapa saja dapat mempelajari dan mempraktikk
 
 Berikut adalah pemetaan lengkap antara modul Azure resmi dan implementasi alternatif gratis/lokal yang tersedia di repositori ini:
 
-| Modul Ujian / Topik | Target Azure | Alternatif Free Cloud (Gemini) | Alternatif Offline (Ollama/Lokal) | Skrip Alternatif |
+| Modul Ujian / Topik | Target Azure | Alternatif Free Cloud (Gemini) | Alternatif Offline / Bebas Key | Skrip Alternatif |
 |---|---|---|---|---|
+| **00. Free LLM (No Key)**| - | - | `Qwen2.5-0.5B` *(In-Memory)* | [`00_free_llm_no_key.py`](00_free_llm_no_key.py) |
 | **01. Chat LLM** | Azure OpenAI (GPT-4o) | `gemini-1.5-flash` | `llama3.2` | [`01_chat_alt.py`](01_chat_alt.py) |
 | **02. AI Agents** | Azure AI Agent Service | Gemini Function Calling | Ollama Tool Calling | [`02_agent_alt.py`](02_agent_alt.py) |
 | **03. Text Analysis** | Azure Language / JSON Mode | Gemini JSON Mode | Llama 3.2 JSON Mode | [`03_text_analysis_alt.py`](03_text_analysis_alt.py) |
@@ -73,6 +74,9 @@ Melalui adapter [`config_alt.py`](config_alt.py), Anda dapat beralih penyedia mo
 ## 🏃 Cara Menjalankan Seluruh Modul Alternatif
 
 ```bash
+# 00. LLM 100% Gratis Tanpa API Key Sama Sekali (Transformers)
+python alternatif/00_free_llm_no_key.py
+
 # 01. Chat Client Interaktif multi-turn
 python alternatif/01_chat_alt.py
 

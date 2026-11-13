@@ -1,5 +1,6 @@
 # Repositori Praktik Azure AI & Model Alternatif (AI-901)
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb)
 [![Azure AI](https://img.shields.io/badge/Azure-AI%20Foundry-0078D4?logo=microsoftazure&logoColor=white)](https://ai.azure.com/)
 [![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -7,7 +8,16 @@
 
 Repositori ini berisi implementasi kode praktik standar untuk kurikulum **AI-901 (Applied Artificial Intelligence & Azure AI Solutions)** yang mengacu pada best-practice dari [Azure-Samples](https://github.com/Azure-Samples).
 
-Seluruh modul dirancang secara **global**, modular, dan siap pakai—tanpa pengikatan sesi pelatihan tertentu. Repositori ini juga dilengkapi dengan **implementasi model alternatif (Ollama lokal gratis, OpenAI direct, Google Gemini)** bagi peserta yang ingin belajar tanpa ketergantungan kuota Azure.
+Seluruh modul dirancang secara **global**, modular, dan siap pakai—tanpa pengikatan sesi pelatihan tertentu. Repositori ini juga dilengkapi dengan **implementasi model alternatif (Ollama lokal gratis, OpenAI direct, Google Gemini)** serta **LLM Open-Source 100% Bebas Biaya Tanpa API Key**.
+
+---
+
+## 🚀 Akses Cepat & Panduan Tambahan
+
+- 📓 **[Buka di Google Colab (Interaktif 1-Klik)](https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb):** Coba seluruh modul langsung di browser tanpa instalasi lokal!
+- 🔑 **[Panduan Konfigurasi API Key (Azure & Alternatif)](PANDUAN_API_KEY.md):** Petunjuk visual mendapatkan kredensial Azure, Gemini (gratis), dan Colab Secrets.
+- 🎓 **[Panduan Kisi-Kisi & Materi Ujian Sertifikasi AI](PANDUAN_UJIAN_SERTIFIKASI.md):** Bedah konsep teknis, parameter wajib hafal, dan simulasi 10+ soal ujian riil.
+- 🆓 **[Modul 00: LLM Bebas Biaya Tanpa API Key](alternatif/00_free_llm_no_key.py):** Menjalankan model bahasa open-source langsung di memori lokal tanpa API key.
 
 ---
 
@@ -24,7 +34,7 @@ Seluruh modul dirancang secara **global**, modular, dan siap pakai—tanpa pengi
   - [Modul 04: Layanan Suara (Speech-to-Text & Text-to-Speech)](#modul-04-layanan-suara-speech-04_speechpy)
   - [Modul 05: Computer Vision Multimodal](#modul-05-computer-vision-multimodal-05_visionpy)
   - [Modul 06: Azure Content Understanding](#modul-06-azure-content-understanding-06_content_understandingpy)
-- [Alternatif Model AI Lainnya (Ollama, OpenAI, Gemini)](#-alternatif-model-ai-lainnya-ollama-openai-gemini)
+- [Alternatif Model AI Lainnya (Ollama, OpenAI, Gemini, Free No-Key)](#-alternatif-model-ai-lainnya-ollama-openai-gemini)
 - [Praktik Terbaik & Manajemen Biaya](#-praktik-terbaik--manajemen-biaya)
 
 ---
@@ -77,7 +87,10 @@ flowchart TD
 
 ```text
 kode_praktik_AI901/
-├── 01_chat_client.py           # Chat client interaktif multi-turn
+├── AI_901_Hands_On_Lab.ipynb   # 📓 Notebook Google Colab interaktif siap pakai
+├── PANDUAN_API_KEY.md          # 🔑 Panduan visual setup kredensial Azure & Alternatif
+├── PANDUAN_UJIAN_SERTIFIKASI.md# 🎓 Kisi-kisi materi, parameter, & simulasi soal ujian
+├── 01_chat_client.py           # Chat client interaktif multi-turn (Azure)
 ├── 02_agent_client.py          # Pemanggilan Azure AI Agent Service
 ├── 03_text_analysis.py         # Analisis teks berstruktur (JSON Mode)
 ├── 04_speech.py                # Layanan suara (TTS & STT Azure Speech)
@@ -95,6 +108,7 @@ kode_praktik_AI901/
     ├── README.md               # Panduan khusus modul alternatif
     ├── config_alt.py           # Multi-provider client (Ollama/OpenAI/Gemini)
     ├── .env.alt.example        # Template konfigurasi model alternatif
+    ├── 00_free_llm_no_key.py   # 🆓 LLM 100% Gratis Tanpa API Key (Transformers)
     ├── 01_chat_alt.py          # Chat interaktif dengan Ollama / Gemini / OpenAI
     ├── 02_agent_alt.py          # Autonomous AI Agent dengan Tool Calling
     ├── 03_text_analysis_alt.py # Analisis sentimen JSON dengan model alternatif
@@ -269,9 +283,10 @@ Klien SDK modern mengadopsi standar antarmuka OpenAI yang universal. Kami telah 
 
 ### 📊 Matriks Keselarasan Modul (Azure vs Alternatif)
 
-| Modul Ujian / Topik | Target Azure | Alternatif Free Cloud (Gemini) | Alternatif Offline (Ollama/Lokal) | Skrip Alternatif |
+| Modul Ujian / Topik | Target Azure | Alternatif Free Cloud (Gemini) | Alternatif Offline / Tanpa Key | Skrip Alternatif |
 |---|---|---|---|---|
-| **01. Chat LLM** | Azure OpenAI (GPT-4o) | `gemini-1.5-flash` | `llama3.2` | [`01_chat_alt.py`](alternatif/01_chat_alt.py) |
+| **00. Free LLM (No Key)**| - | - | `Qwen2.5-0.5B` *(In-Memory)* | [`00_free_llm_no_key.py`](alternatif/00_free_llm_no_key.py) |
+| **01. Chat LLM** | Azure OpenAI (GPT-4o) | `gemini-1.5-flash` | `llama3.2` *(Ollama)* | [`01_chat_alt.py`](alternatif/01_chat_alt.py) |
 | **02. AI Agents** | Azure AI Agent Service | Gemini Function Calling | Ollama Tool Calling | [`02_agent_alt.py`](alternatif/02_agent_alt.py) |
 | **03. Text Analysis** | Azure Language / JSON Mode | Gemini JSON Mode | Llama 3.2 JSON Mode | [`03_text_analysis_alt.py`](alternatif/03_text_analysis_alt.py) |
 | **04. Speech AI** | Azure Speech Service | Edge-TTS (TTS) + Whisper (STT) | Edge-TTS (TTS) + Whisper (STT) | [`04_speech_free_alt.py`](alternatif/04_speech_free_alt.py) |
