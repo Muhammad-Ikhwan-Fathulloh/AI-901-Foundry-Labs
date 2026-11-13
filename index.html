@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Belajar Interaktif AI-901 & Azure AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .gradient-azure {
+      background: linear-gradient(135deg, #0078d4 0%, #00bcf2 50%, #5c2d91 100%);
+    }
+    .gradient-dark {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .tab-btn.active {
+      background-color: #0078d4;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl gradient-azure flex items-center justify-center text-white font-bold text-xl shadow-md">
+          AI
+        </div>
+        <div>
+          <span class="font-extrabold text-lg text-slate-900 tracking-tight">AI-901</span>
+          <span class="text-xs bg-sky-100 text-sky-800 font-semibold px-2 py-0.5 rounded-full ml-1.5 border border-sky-200">Interactive Portal</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
+        <a href="#modul" class="hover:text-sky-600 transition">Modul Praktik</a>
+        <a href="#ilustrasi" class="hover:text-sky-600 transition">Simulasi Visual</a>
+        <a href="#kuis" class="hover:text-sky-600 transition">Simulasi Ujian</a>
+        <a href="#kredensial" class="hover:text-sky-600 transition">Setup API Key</a>
+      </nav>
+
+      <div class="flex items-center space-x-3">
+        <a href="https://github.com/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs" target="_blank" class="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition" title="Buka di GitHub">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+        <a href="https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb" target="_blank" class="inline-flex items-center space-x-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-sm transition hover:shadow-md">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Colab" class="h-4">
+          <span>Buka di Colab</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative overflow-hidden pt-12 pb-16 gradient-dark text-white">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center space-x-2 bg-sky-500/10 border border-sky-400/30 text-sky-300 text-xs font-semibold px-3 py-1 rounded-full mb-6">
+        <span>⭐ Kurikulum Resmi Microsoft AI-901 & Azure AI Foundry</span>
+      </div>
+      
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+        Belajar Praktik AI Jadi <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300">Mudah, Visual, & Bebas Biaya</span>
+      </h1>
+      
+      <p class="max-w-3xl mx-auto text-slate-300 text-base sm:text-lg mb-10 leading-relaxed">
+        Jelajahi 6 modul kecerdasan buatan terapan: <b>Conversational Chat</b>, <b>Autonomous AI Agents</b>, <b>Text Analytics</b>, <b>Speech AI</b>, <b>Multimodal Vision</b>, dan <b>Document Understanding</b>. Dilengkapi simulasi interaktif dan opsi gratis tanpa API Key.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-base px-8 py-4 rounded-2xl shadow-lg shadow-orange-500/25 transition-all hover:scale-105">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          <span>1-Klik Buka Lab Google Colab</span>
+        </a>
+        <a href="#modul" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-base px-6 py-4 rounded-2xl transition">
+          <span>Pelajari Modul & Ilustrasi</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-14 pt-10 border-t border-slate-800/80 text-left">
+        <div class="p-3">
+          <div class="text-2xl font-black text-sky-400">6 + 1 Modul</div>
+          <div class="text-xs text-slate-400 mt-1">Lengkap Azure + Alternatif</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-black text-teal-400">100% Gratis</div>
+          <div class="text-xs text-slate-400 mt-1">Tersedia opsi Tanpa API Key</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-black text-indigo-400">Siap Ujian</div>
+          <div class="text-xs text-slate-400 mt-1">Kisi-kisi AI-900 / AI-102</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-black text-amber-400">Google Colab</div>
+          <div class="text-xs text-slate-400 mt-1">Jalankan di browser interaktif</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION: EMBED GOOGLE COLAB LAUNCHER ================= -->
+  <section class="py-12 bg-sky-50 border-b border-sky-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-r from-sky-600 to-indigo-700 rounded-3xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute right-0 top-0 bottom-0 opacity-10 flex items-center pr-10 pointer-events-none">
+          <svg class="w-96 h-96" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <span class="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4">Hands-On Praktik Langsung</span>
+          <h2 class="text-2xl sm:text-3xl font-bold mb-3">Mau Praktik Sekarang Tanpa Install Python di Laptop?</h2>
+          <p class="text-sky-100 text-sm sm:text-base mb-6 leading-relaxed">
+            Notebook Google Colab kami telah dikonfigurasi lengkap dengan seluruh dependensi, file dataset ulasan, dummy gambar rak toko, serta faktur PDF invoice. Anda dapat menjalankan semua lab cukup dengan 1 klik tombol di bawah!
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <a href="https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb" target="_blank" class="inline-flex items-center space-x-3 bg-white text-slate-900 font-extrabold text-sm sm:text-base px-6 py-3.5 rounded-xl hover:bg-slate-100 transition shadow-md">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Colaboratory_SVG_Logo.svg" alt="Colab Logo" class="w-6 h-6">
+              <span>Buka Lab Notebook di Google Colab</span>
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+            <span class="text-xs text-sky-200">Termasuk model open-source gratis tanpa API Key</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION: INTERACTIVE SIMULATION & ILUSTRASI ================= -->
+  <section id="ilustrasi" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-3xl font-extrabold text-slate-900">Ilustrasi & Simulator Konsep Interaktif</h2>
+        <p class="text-slate-600 mt-2">Eksplorasi cara kerja setiap modul AI secara visual sebelum menjalankan kodenya.</p>
+      </div>
+
+      <!-- Simulator Tabs -->
+      <div class="flex flex-wrap justify-center gap-2 mb-8" id="sim-tabs">
+        <button onclick="switchSim('chat')" id="tab-btn-chat" class="tab-btn active px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl transition">01. Temperature LLM</button>
+        <button onclick="switchSim('agent')" id="tab-btn-agent" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl transition">02. Agent Tool Calling</button>
+        <button onclick="switchSim('ner')" id="tab-btn-ner" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl transition">03. NLP & JSON Mode</button>
+        <button onclick="switchSim('speech')" id="tab-btn-speech" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl transition">04. Speech AI & SSML</button>
+        <button onclick="switchSim('vision')" id="tab-btn-vision" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl transition">05. Multimodal Vision</button>
+        <button onclick="switchSim('document')" id="tab-btn-document" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl transition">06. REST Polling</button>
+      </div>
+
+      <!-- Container Simulasi -->
+      <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm min-h-[420px] flex items-center justify-center">
+
+        <!-- SIMULASI 1: Temperature & Multi-turn -->
+        <div id="sim-chat" class="w-full max-w-4xl">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <span class="text-xs font-bold text-sky-600 bg-sky-100 px-2.5 py-1 rounded-md uppercase">Modul 01: Chat & Hyperparameter</span>
+              <h3 class="text-xl font-bold mt-2 text-slate-900">Efek Parameter <code class="text-sky-600 font-bold">temperature</code></h3>
+              <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                Ubah slider nilai temperature di bawah untuk melihat perbedaan respons model. 
+                Nilai rendah menghasilkan respon kaku dan konsisten (faktual). Nilai tinggi menghasilkan respon kreatif dan bervariasi.
+              </p>
+              
+              <div class="mt-6 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-center text-sm font-semibold mb-2">
+                  <span>Temperature: <span id="temp-val" class="text-sky-600 font-bold">0.0</span></span>
+                  <span id="temp-label" class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Deterministik & Faktual</span>
+                </div>
+                <input type="range" id="temp-slider" min="0" max="1.5" step="0.5" value="0" oninput="updateTemperature(this.value)" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600">
+                <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                  <span>0.0 (Bank/Medis)</span>
+                  <span>0.7 (Umum)</span>
+                  <span>1.5 (Kreatif)</span>
+                </div>
+              </div>
+
+              <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900">
+                📌 <b>Poin Kritis Ujian:</b> Untuk kepatuhan hukum, perbankan, dan data terstruktur, turunkan parameter <code>temperature</code> mendekati 0.0!
+              </div>
+            </div>
+
+            <!-- Chat Output Preview -->
+            <div class="bg-slate-900 text-slate-100 rounded-2xl p-5 shadow-lg flex flex-col h-80 justify-between">
+              <div class="space-y-3 overflow-y-auto pr-1 text-sm">
+                <div class="flex items-start space-x-2">
+                  <div class="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">U</div>
+                  <div class="bg-slate-800 p-2.5 rounded-2xl rounded-tl-none max-w-[85%] text-slate-200">
+                    Jelaskan apa itu AI-901 dalam 1 kalimat!
+                  </div>
+                </div>
+                <div class="flex items-start space-x-2">
+                  <div class="w-6 h-6 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold text-white">AI</div>
+                  <div id="chat-output" class="bg-sky-950/80 border border-sky-800/60 p-3 rounded-2xl rounded-tl-none text-sky-100 transition-all duration-300">
+                    AI-901 adalah kurikulum pembelajaran terapan untuk menguasai pengembangan solusi kecerdasan buatan berbasis ekosistem Microsoft Azure.
+                  </div>
+                </div>
+              </div>
+              <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-500 flex justify-between">
+                <span>Model: gpt-4o-mini</span>
+                <span>Role: system + user</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULASI 2: Agent Tool Calling -->
+        <div id="sim-agent" class="w-full max-w-4xl hidden">
+          <div class="text-center max-w-2xl mx-auto mb-6">
+            <span class="text-xs font-bold text-indigo-600 bg-indigo-100 px-2.5 py-1 rounded-md uppercase">Modul 02: AI Agent Orchestration</span>
+            <h3 class="text-xl font-bold mt-2 text-slate-900">Bagaimana Model Memanggil Tools (Function Calling)</h3>
+            <p class="text-xs text-slate-600 mt-1">
+              Model AI <b>tidak mengeksekusi kode Python sendiri</b>. Model hanya menghasilkan JSON pemanggilan fungsi, lalu aplikasi klien Anda mengeksekusinya.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-center">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div class="w-10 h-10 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center mx-auto mb-2 font-bold">1</div>
+              <h4 class="text-xs font-bold text-slate-800">Prompt Pengguna</h4>
+              <p class="text-[11px] text-slate-500 mt-1">"Berapa ongkir kirim paket 3 kg ke Surabaya?"</p>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl shadow-sm flex flex-col justify-between">
+              <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center mx-auto mb-2 font-bold">2</div>
+              <h4 class="text-xs font-bold text-indigo-900">LLM Merespons JSON</h4>
+              <code class="text-[10px] text-indigo-800 bg-indigo-100 p-1.5 rounded mt-1 break-all">tool: cek_ongkir({kota: "Surabaya", berat: 3})</code>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl shadow-sm flex flex-col justify-between">
+              <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center mx-auto mb-2 font-bold">3</div>
+              <h4 class="text-xs font-bold text-amber-900">Klien Eksekusi Python</h4>
+              <p class="text-[11px] text-amber-800 mt-1">Fungsi lokal berjalan $\rightarrow$ Hasil: Rp 54.000</p>
+            </div>
+            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl shadow-sm flex flex-col justify-between">
+              <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto mb-2 font-bold">4</div>
+              <h4 class="text-xs font-bold text-emerald-900">Jawaban Akhir</h4>
+              <p class="text-[11px] text-emerald-800 mt-1">"Ongkos kirim ke Surabaya adalah Rp 54.000."</p>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <a href="https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb" target="_blank" class="inline-flex items-center text-xs font-bold text-indigo-600 hover:text-indigo-800">
+              <span>Coba jalankan modul agen ini di Google Colab</span>
+              <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- SIMULASI 3: Text Analysis & NER -->
+        <div id="sim-ner" class="w-full max-w-4xl hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <span class="text-xs font-bold text-teal-600 bg-teal-100 px-2.5 py-1 rounded-md uppercase">Modul 03: NLP & JSON Mode</span>
+              <h3 class="text-xl font-bold mt-2 text-slate-900">Ekstraksi Entitas & Sentimen</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Kombinasi analisis sentimen dan <b>Named Entity Recognition (NER)</b> dengan parameter <code>response_format={"type": "json_object"}</code>.
+              </p>
+
+              <div class="mt-4 p-3 bg-white rounded-xl border border-slate-200 text-xs text-slate-700">
+                <b>Kalimat Ulasan:</b><br>
+                <span class="inline-block mt-1 p-2 bg-slate-50 rounded border border-slate-100 italic">
+                  "Sepatu lari dari toko <span class="bg-blue-100 text-blue-800 px-1 rounded font-semibold">Bandung Jaya</span> sangat nyaman dipakai di <span class="bg-amber-100 text-amber-800 px-1 rounded font-semibold">Jakarta</span>, tapi kardusnya penyok."
+                </span>
+              </div>
+
+              <div class="flex flex-wrap gap-2 mt-4 text-[11px]">
+                <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold">🏢 Organization / Brand</span>
+                <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">📍 Location</span>
+                <span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded font-bold">🛍️ Product</span>
+              </div>
+            </div>
+
+            <!-- JSON Format Box -->
+            <div class="bg-slate-900 text-slate-100 rounded-2xl p-5 shadow-lg text-xs font-mono">
+              <div class="text-slate-400 text-[10px] pb-2 border-b border-slate-800 mb-2">OUTPUT JSON DARI MODEL:</div>
+              <pre class="text-emerald-400 whitespace-pre-wrap">{
+  "sentiment": "mixed",
+  "entities": [
+    {"text": "Sepatu lari", "type": "product"},
+    {"text": "Bandung Jaya", "type": "brand"},
+    {"text": "Jakarta", "type": "location"}
+  ],
+  "summary": "Kualitas sepatu memuaskan namun kemasan rusak saat pengiriman."
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULASI 4: Speech AI & SSML -->
+        <div id="sim-speech" class="w-full max-w-4xl hidden">
+          <div class="text-center max-w-2xl mx-auto mb-6">
+            <span class="text-xs font-bold text-violet-600 bg-violet-100 px-2.5 py-1 rounded-md uppercase">Modul 04: Speech AI</span>
+            <h3 class="text-xl font-bold mt-2 text-slate-900">Sintesis Suara (TTS) & Tag SSML</h3>
+            <p class="text-xs text-slate-600 mt-1">
+              <b>SSML (Speech Synthesis Markup Language)</b> adalah format XML resmi untuk mengontrol jeda intonasi dan kecepatan berbicara.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <div class="bg-slate-900 text-slate-100 p-5 rounded-2xl text-xs font-mono">
+              <div class="text-slate-400 text-[10px] pb-2 border-b border-slate-800 mb-2">CONTOH STRUKTUR SSML (XML):</div>
+              <pre class="text-sky-300 whitespace-pre-wrap">&lt;speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="id-ID"&gt;
+  &lt;voice name="id-ID-ArdiNeural"&gt;
+    Selamat datang pelanggan!
+    &lt;break time="1500ms"/&gt;
+    &lt;prosody rate="fast"&gt;
+      Pesanan Anda sedang kami proses.
+    &lt;/prosody&gt;
+  &lt;/voice&gt;
+&lt;/speak&gt;</pre>
+            </div>
+
+            <div class="space-y-3">
+              <div class="bg-white p-4 rounded-xl border border-slate-200">
+                <h4 class="text-xs font-bold text-slate-800">Tag <code>&lt;break time="1500ms"/&gt;</code></h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">Menyisipkan jeda keheningan spesifik (contoh 1.5 detik) sebelum kata kunci dibacakan.</p>
+              </div>
+              <div class="bg-white p-4 rounded-xl border border-slate-200">
+                <h4 class="text-xs font-bold text-slate-800">Tag <code>&lt;prosody rate="..." pitch="..."&gt;</code></h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">Mengubah tempo kecepatan suara dan tinggi-rendahnya nada suara.</p>
+              </div>
+              <div class="p-3 bg-violet-50 border border-violet-200 rounded-xl text-xs text-violet-900">
+                💡 <b>Catatan Gratis:</b> Modul ini bisa dicoba 100% gratis menggunakan library <code>edge-tts</code> tanpa langganan Azure!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULASI 5: Multimodal Vision -->
+        <div id="sim-vision" class="w-full max-w-4xl hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <span class="text-xs font-bold text-rose-600 bg-rose-100 px-2.5 py-1 rounded-md uppercase">Modul 05: Computer Vision Multimodal</span>
+              <h3 class="text-xl font-bold mt-2 text-slate-900">Deteksi Rak Produk Toko</h3>
+              <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                Model Vision-LLM menerima gambar fisik (misal foto rak di toko) dan menjawab pertanyaan jumlah stok dan kondisi visual.
+              </p>
+
+              <div class="mt-4 space-y-2">
+                <div class="flex items-center space-x-2 text-xs text-slate-700 bg-white p-2 rounded-lg border border-slate-200">
+                  <span class="w-3 h-3 bg-red-500 rounded-sm"></span>
+                  <span><b>Rak Atas:</b> Susu Cokelat, Jus Apel, Teh Hijau (3 Item)</span>
+                </div>
+                <div class="flex items-center space-x-2 text-xs text-slate-700 bg-white p-2 rounded-lg border border-slate-200">
+                  <span class="w-3 h-3 bg-amber-500 rounded-sm"></span>
+                  <span><b>Rak Bawah:</b> Biskuit & Keripik (2 Item)</span>
+                </div>
+              </div>
+
+              <p class="text-[11px] text-slate-500 mt-3">
+                📌 Di ujian, perhatikan perbedaan <b>Multimodal Vision</b> (Gambar $\rightarrow$ Teks) dan <b>DALL-E</b> (Teks $\rightarrow$ Gambar).
+              </p>
+            </div>
+
+            <!-- Visual SVG Rak Toko -->
+            <div class="bg-slate-100 p-4 rounded-2xl border border-slate-300 shadow-inner flex flex-col items-center">
+              <svg width="280" height="200" viewBox="0 0 300 200" class="rounded-xl shadow-sm bg-slate-200">
+                <!-- Rak Atas -->
+                <rect x="20" y="80" width="260" height="12" fill="#8B4513" rx="2" />
+                <rect x="40" y="30" width="45" height="50" fill="#EF4444" rx="3" />
+                <rect x="105" y="35" width="40" height="45" fill="#3B82F6" rx="3" />
+                <rect x="165" y="25" width="50" height="55" fill="#10B981" rx="3" />
+
+                <!-- Rak Bawah -->
+                <rect x="20" y="160" width="260" height="12" fill="#8B4513" rx="2" />
+                <rect x="50" y="110" width="60" height="50" fill="#F59E0B" rx="3" />
+                <rect x="140" y="115" width="70" height="45" fill="#8B5CF6" rx="3" />
+              </svg>
+              <span class="text-[11px] text-slate-500 mt-2 font-mono">Foto Rak: data/rak.jpg (Total: 5 Produk)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIMULASI 6: Document Understanding & REST -->
+        <div id="sim-document" class="w-full max-w-4xl hidden">
+          <div class="text-center max-w-2xl mx-auto mb-6">
+            <span class="text-xs font-bold text-amber-600 bg-amber-100 px-2.5 py-1 rounded-md uppercase">Modul 06: Content Understanding</span>
+            <h3 class="text-xl font-bold mt-2 text-slate-900">Alur Pola Asynchronous REST API</h3>
+            <p class="text-xs text-slate-600 mt-1">
+              Pola ini <b>paling sering diujikan</b> dalam sertifikasi Azure AI: Mengirim file besar tanpa memblokir server.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+              <span class="text-xs font-bold text-blue-600">Langkah 1: POST Dokumen</span>
+              <p class="text-xs text-slate-600 mt-2">Klien mengirim file invoice PDF.</p>
+              <div class="mt-3 bg-blue-50 text-blue-900 text-[11px] p-2 rounded-lg font-mono">
+                Status: <b>HTTP 202 Accepted</b><br>
+                Header: <b>Operation-Location</b>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+              <span class="text-xs font-bold text-amber-600">Langkah 2: Polling Berkala</span>
+              <p class="text-xs text-slate-600 mt-2">Klien memanggil GET ke URL Operation-Location setiap 3 detik.</p>
+              <div class="mt-3 bg-amber-50 text-amber-900 text-[11px] p-2 rounded-lg font-mono">
+                Status pekerjaan:<br>
+                <code>"running"</code> $\rightarrow$ <code>"succeeded"</code>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+              <span class="text-xs font-bold text-emerald-600">Langkah 3: Ambil Hasil</span>
+              <p class="text-xs text-slate-600 mt-2">Server mengembalikan nilai JSON dari invoice.</p>
+              <div class="mt-3 bg-emerald-50 text-emerald-900 text-[11px] p-2 rounded-lg font-mono">
+                No: INV-100<br>
+                Total: $1,250.00
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION: SIMULASI UJIAN (MINI QUIZ) ================= -->
+  <section id="kuis" class="py-16 bg-slate-100 border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full uppercase">Latihan Sertifikasi AI-900 / AI-102</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 mt-2">Kuis Simulasi Ujian Mandiri</h2>
+        <p class="text-slate-600 text-sm mt-1">Uji pemahaman Anda dengan soal-soal skenario riil yang sering muncul.</p>
+      </div>
+
+      <!-- Card Kuis -->
+      <div class="space-y-6">
+
+        <!-- Pertanyaan 1 -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400">SOAL 01 DARI 03</span>
+          <h3 class="text-base font-bold text-slate-900 mt-1">
+            Sebuah bank membuat asisten AI untuk menghitung simulasi cicilan pinjaman nasabah. Respon AI harus deterministik, presisi, dan tidak berhalusinasi. Pengaturan apa yang wajib diterapkan?
+          </h3>
+          <div class="mt-4 space-y-2 text-sm text-slate-700">
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q1" value="A" class="accent-sky-600">
+              <span>A. Menaikkan nilai <code>temperature</code> menjadi 1.5</span>
+            </label>
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q1" value="B" class="accent-sky-600">
+              <span>B. Menurunkan nilai <code>temperature</code> mendekati 0.0</span>
+            </label>
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q1" value="C" class="accent-sky-600">
+              <span>C. Mengganti model teks menjadi model DALL-E</span>
+            </label>
+          </div>
+          <button onclick="checkAnswer('q1', 'B', 'jawaban-q1')" class="mt-4 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs rounded-xl transition">
+            Periksa Jawaban
+          </button>
+          <div id="jawaban-q1" class="hidden mt-3 p-3 rounded-xl text-xs"></div>
+        </div>
+
+        <!-- Pertanyaan 2 -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400">SOAL 02 DARI 03</span>
+          <h3 class="text-base font-bold text-slate-900 mt-1">
+            Saat mengirimkan dokumen PDF berukuran besar ke Azure Content Understanding, server mengembalikan respon <code>HTTP 202 Accepted</code>. Di manakah klien dapat menemukan URL untuk memantau status penyelesaian ekstraksi dokumen?
+          </h3>
+          <div class="mt-4 space-y-2 text-sm text-slate-700">
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q2" value="A" class="accent-sky-600">
+              <span>A. Di dalam body response JSON pada atribut <code>status_url</code></span>
+            </label>
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q2" value="B" class="accent-sky-600">
+              <span>B. Pada response header bernama <code>Operation-Location</code></span>
+            </label>
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q2" value="C" class="accent-sky-600">
+              <span>C. Di dalam query parameter URL permintaan awal</span>
+            </label>
+          </div>
+          <button onclick="checkAnswer('q2', 'B', 'jawaban-q2')" class="mt-4 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs rounded-xl transition">
+            Periksa Jawaban
+          </button>
+          <div id="jawaban-q2" class="hidden mt-3 p-3 rounded-xl text-xs"></div>
+        </div>
+
+        <!-- Pertanyaan 3 -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <span class="text-xs font-bold text-slate-400">SOAL 03 DARI 03</span>
+          <h3 class="text-base font-bold text-slate-900 mt-1">
+            Dalam arsitektur Autonomous AI Agent dengan kapabilitas <i>Tool/Function Calling</i>, pihak manakah yang mengeksekusi kode Python sebenarnya saat tool dipanggil?
+          </h3>
+          <div class="mt-4 space-y-2 text-sm text-slate-700">
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q3" value="A" class="accent-sky-600">
+              <span>A. Server pusat Azure OpenAI mengeksekusi kode di cloud secara otomatis</span>
+            </label>
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q3" value="B" class="accent-sky-600">
+              <span>B. Aplikasi klien Anda mengeksekusi kode fungsi lokal berdasarkan JSON dari model</span>
+            </label>
+            <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="q3" value="C" class="accent-sky-600">
+              <span>C. Compiler browser pengguna tanpa otorisasi klien</span>
+            </label>
+          </div>
+          <button onclick="checkAnswer('q3', 'B', 'jawaban-q3')" class="mt-4 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs rounded-xl transition">
+            Periksa Jawaban
+          </button>
+          <div id="jawaban-q3" class="hidden mt-3 p-3 rounded-xl text-xs"></div>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="https://github.com/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/PANDUAN_UJIAN_SERTIFIKASI.md" target="_blank" class="text-sm font-bold text-sky-600 hover:underline">
+          Lihat 15+ Latihan Soal Lengkap di Panduan Ujian Sertifikasi &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION: PANDUAN API KEY & SETUP ================= -->
+  <section id="kredensial" class="py-16 bg-white border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-3xl font-extrabold text-slate-900">Setup Kredensial & API Key</h2>
+        <p class="text-slate-600 mt-2">Dua jalur pengujian: menggunakan akun resmi Microsoft Azure atau jalur Alternatif Gratis.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Azure Setup -->
+        <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="w-8 h-8 rounded-lg bg-sky-600 text-white flex items-center justify-center font-bold text-sm">AZ</span>
+            <h3 class="text-lg font-bold text-slate-900">Jalur Resmi: Microsoft Azure</h3>
+          </div>
+          <ol class="space-y-3 text-xs text-slate-700 list-decimal list-inside leading-relaxed">
+            <li>Buka portal <a href="https://ai.azure.com/" target="_blank" class="text-sky-600 font-bold underline">Azure AI Foundry</a> lalu buat Project.</li>
+            <li>Salin <code>AZURE_AI_PROJECT_ENDPOINT</code> dari menu Project Overview.</li>
+            <li>Deploy model <code>gpt-4o-mini</code> untuk chat & vision di menu Deployments.</li>
+            <li>Buat resource <b>Speech Services</b> di Azure Portal untuk mendapatkan <code>AZURE_SPEECH_KEY</code>.</li>
+            <li>Salin <code>.env.example</code> ke <code>.env</code> lalu isi nilainya.</li>
+          </ol>
+        </div>
+
+        <!-- Free Alternative Setup -->
+        <div class="bg-emerald-50/50 border border-emerald-200 p-6 rounded-2xl">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">FREE</span>
+            <h3 class="text-lg font-bold text-slate-900">Jalur Gratis: Google Gemini & Offline</h3>
+          </div>
+          <ol class="space-y-3 text-xs text-slate-700 list-decimal list-inside leading-relaxed">
+            <li>Dapatkan API Key gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-emerald-700 font-bold underline">Google AI Studio</a> (tanpa kartu kredit).</li>
+            <li>Di file <code>alternatif/.env</code>, atur <code>AI_PROVIDER=gemini</code> dan masukkan kuncinya.</li>
+            <li>Untuk opsi <b>100% Offline Tanpa Key</b>, gunakan model open-source di <code>alternatif/00_free_llm_no_key.py</code> atau pasang <a href="https://ollama.com" target="_blank" class="text-emerald-700 font-bold underline">Ollama</a>.</li>
+            <li>Jalankan seluruh modul alternatif tanpa khawatir kuota tagihan!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 py-10 mt-auto border-t border-slate-800 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-white text-sm">AI-901 Foundry Labs</span>
+        <span>&bull; Repositori Pembelajaran Berstandar Azure-Samples</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="https://github.com/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs" target="_blank" class="hover:text-white transition">GitHub Repo</a>
+        <a href="https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb" target="_blank" class="hover:text-white transition">Buka di Colab</a>
+        <a href="PANDUAN_UJIAN_SERTIFIKASI.md" target="_blank" class="hover:text-white transition">Kisi-kisi Ujian</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Tab Simulator Switching
+    function switchSim(simName) {
+      const tabs = ['chat', 'agent', 'ner', 'speech', 'vision', 'document'];
+      tabs.forEach(t => {
+        const el = document.getElementById(`sim-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === simName) {
+          el.classList.remove('hidden');
+          btn.classList.add('active');
+          btn.classList.remove('bg-slate-100', 'text-slate-700');
+        } else {
+          el.classList.add('hidden');
+          btn.classList.remove('active');
+          btn.classList.add('bg-slate-100', 'text-slate-700');
+        }
+      });
+    }
+
+    // Temperature Slider Simulation
+    function updateTemperature(val) {
+      const num = parseFloat(val);
+      document.getElementById('temp-val').innerText = num.toFixed(1);
+      const out = document.getElementById('chat-output');
+      const label = document.getElementById('temp-label');
+
+      if (num === 0.0) {
+        label.innerText = "Deterministik & Faktual";
+        label.className = "text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold";
+        out.innerText = "AI-901 adalah kurikulum pembelajaran terapan untuk menguasai pengembangan solusi kecerdasan buatan berbasis ekosistem Microsoft Azure.";
+      } else if (num === 0.5) {
+        label.innerText = "Seimbang (Umum)";
+        label.className = "text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold";
+        out.innerText = "AI-901 merupakan kurikulum praktis yang membekali developer dan mahasiswa dengan keterampilan komprehensif merancang sistem AI menggunakan Azure AI Foundry.";
+      } else if (num === 1.0) {
+        label.innerText = "Kreatif & Variatif";
+        label.className = "text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold";
+        out.innerText = "AI-901 adalah gerbang emas bagi calon insinyur masa depan untuk menyelami keajaiban kecerdasan buatan Azure mulai dari bot cerdas hingga visi komputer!";
+      } else {
+        label.innerText = "Sangat Kreatif / Liar";
+        label.className = "text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold";
+        out.innerText = "Bayangkan sebuah petualangan coding spektakuler bernama AI-901—kompas pamungkas Anda menjelajahi galaksi kecerdasan buatan dan awan komputasi modern!";
+      }
+    }
+
+    // Quiz Answer Checking
+    function checkAnswer(qName, correctAnswer, targetDivId) {
+      const selected = document.querySelector(`input[name="${qName}"]:checked`);
+      const div = document.getElementById(targetDivId);
+      div.classList.remove('hidden');
+
+      if (!selected) {
+        div.className = "mt-3 p-3 rounded-xl text-xs bg-amber-100 text-amber-900 border border-amber-200";
+        div.innerHTML = "⚠️ Silakan pilih salah satu opsi jawaban terlebih dahulu!";
+        return;
+      }
+
+      if (selected.value === correctAnswer) {
+        div.className = "mt-3 p-3 rounded-xl text-xs bg-emerald-100 text-emerald-900 border border-emerald-300 font-semibold";
+        div.innerHTML = "🎉 <b>BENAR!</b> Pilihan Anda tepat. " + getExplanation(qName);
+      } else {
+        div.className = "mt-3 p-3 rounded-xl text-xs bg-rose-100 text-rose-900 border border-rose-300 font-semibold";
+        div.innerHTML = "❌ <b>KURANG TEPAT.</b> Jawaban yang benar adalah <b>" + correctAnswer + "</b>. " + getExplanation(qName);
+      }
+    }
+
+    function getExplanation(qName) {
+      if (qName === 'q1') {
+        return "Nilai temperature mendekati 0.0 meminimalkan variasi dan mencegah model berhalusinasi pada data faktual.";
+      } else if (qName === 'q2') {
+        return "Pada pola asynchronous REST Azure, header 'Operation-Location' selalu memuat URL pelacak status pekerjaan.";
+      } else if (qName === 'q3') {
+        return "Model LLM hanya berperan sebagai planner yang menghasilkan JSON nama & argumen fungsi. Klien lokal Anda yang mengeksekusi kode tersebut.";
+      }
+      return "";
+    }
+  </script>
+</body>
+</html>

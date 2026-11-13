@@ -14,6 +14,7 @@ Seluruh modul dirancang secara **global**, modular, dan siap pakai—tanpa pengi
 
 ## 🚀 Akses Cepat & Panduan Tambahan
 
+- 🌐 **[Portal Web Edukatif Interaktif (index.html)](index.html):** Antarmuka visual simulator konsep, animasi alur, kuis ujian, dan peluncur Google Colab!
 - 📓 **[Buka di Google Colab (Interaktif 1-Klik)](https://colab.research.google.com/github/Muhammad-Ikhwan-Fathulloh/AI-901-Foundry-Labs/blob/main/AI_901_Hands_On_Lab.ipynb):** Coba seluruh modul langsung di browser tanpa instalasi lokal!
 - 🔑 **[Panduan Konfigurasi API Key (Azure & Alternatif)](PANDUAN_API_KEY.md):** Petunjuk visual mendapatkan kredensial Azure, Gemini (gratis), dan Colab Secrets.
 - 🎓 **[Panduan Kisi-Kisi & Materi Ujian Sertifikasi AI](PANDUAN_UJIAN_SERTIFIKASI.md):** Bedah konsep teknis, parameter wajib hafal, dan simulasi 10+ soal ujian riil.
@@ -87,6 +88,7 @@ flowchart TD
 
 ```text
 kode_praktik_AI901/
+├── index.html                  # 🌐 Portal web edukatif interaktif & visualisasi lab
 ├── AI_901_Hands_On_Lab.ipynb   # 📓 Notebook Google Colab interaktif siap pakai
 ├── PANDUAN_API_KEY.md          # 🔑 Panduan visual setup kredensial Azure & Alternatif
 ├── PANDUAN_UJIAN_SERTIFIKASI.md# 🎓 Kisi-kisi materi, parameter, & simulasi soal ujian
